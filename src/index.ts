@@ -1,55 +1,38 @@
-interface HTMLButtonElementSprut extends HTMLButtonElement {
-  handleClick: (e: any) => any;
-}
+import Component from './Component';
+
 (() => {
   document.addEventListener('DOMContentLoaded', () => {
+    const root = document.getElementById('main');
     let count = 0
-    function handleClick(callback: (e: HTMLBaseElement) => any) {
-      return this.addEventListener('click', callback)
-    }
-    
-    class Counter {
-      private static counter: HTMLDivElement;
-      private static props: {};
-      static init() {
-        const main = document.getElementById('main');
-        this.counter = document.createElement('div');
-        this.counter.innerHTML = 'Count of click: '
-        main.append(this.counter);
-      }
+    const MainComponent = new Component({
+      tagName: 'div',
+      innerHTML: '',
+      parent: root,
+      classList: ['mainlol'],
+      props: { count }
+    });
 
-      static listening() {
-        const button = document.getElementsByClassName('button');
-        let i = 0
-        const body = this.counter.innerHTML
-        button[0].addEventListener('click', () => {
-          this.counter.innerHTML = `${body} ${count}`
-          console.log(count)
-        })
-      }
-    }
+    MainComponent.init();
 
-    class Button {
-      private static button: HTMLButtonElementSprut;
-      static init() {
-        const main = document.getElementById('main');
-        this.button = document.createElement('button');
-        this.button.classList.add('button');
-        main.append(this.button);
-      }
-      static setBody() {
-        this.button.innerHTML = 'click me!'
-      }
-      static setClick() {
-        this.button.handleClick = handleClick;
-        this.button.handleClick((e: any) => console.log(++count));
-      }
-    }
+    const CounterComponent = new Component({
+      tagName: 'div',
+      innerHTML: 'click time: 0',
+      parent: MainComponent.mount,
+      classList: ['hui']
+    });
 
-    Button.init();
-    Button.setBody();
-    Button.setClick();
-    Counter.init();
-    Counter.listening();
+    const ButtonComponent = new Component({
+      tagName: 'button',
+      innerHTML: 'click me!',
+      parent: MainComponent.mount,
+      classList: ['button']
+    });
+
+    CounterComponent.init()
+    CounterComponent.listening(count)
+    ButtonComponent.init()
+    ButtonComponent.setClick(() => {
+      CounterComponent.setBody(`click time: ${++count}`)
+    })
   })
 })()
