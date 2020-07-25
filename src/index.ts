@@ -8,7 +8,7 @@ import Component from './Component';
       tagName: 'div',
       innerHTML: '',
       parent: root,
-      classList: ['mainlol'],
+      classList: ['main'],
       props: { count }
     });
 
@@ -18,7 +18,7 @@ import Component from './Component';
       tagName: 'div',
       innerHTML: 'click time: 0',
       parent: MainComponent.mount,
-      classList: ['hui']
+      classList: ['counter']
     });
 
     const ButtonComponent = new Component({
